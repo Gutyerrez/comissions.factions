@@ -1,0 +1,9 @@
+name: FactionGoals
+main: io.github.gutyerrez.factions.goals.FactionsGoalsPlugin
+version: 0.1-ALPHA
+author: Gutyerrez
+depend:
+  - Core
+  - MassiveCore
+  - Factions
+  - Vault

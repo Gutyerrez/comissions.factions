@@ -11,5 +11,44 @@
 
     <artifactId>goals</artifactId>
 
+    <name>Goals</name>
 
+    <dependencies>
+        <!-- paper api -->
+        <dependency>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>paperspigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- paper -->
+        <dependency>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>paperspigot</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- core -->
+        <dependency>
+            <groupId>gutyerrez.github.io</groupId>
+            <artifactId>core-spigot</artifactId>
+            <version>0.1-ALPHA</version>
+        </dependency>
+        <!-- massive core -->
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>massivecore</artifactId>
+            <version>2.13.6</version>
+        </dependency>
+        <!-- factions -->
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions</artifactId>
+            <version>2.13.6</version>
+        </dependency>
+        <!-- vault -->
+        <dependency>
+            <groupId>net.milkbow</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+    </dependencies>
 </project>
