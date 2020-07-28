@@ -27,6 +27,17 @@ public class FactionsGoalsPlugin extends CustomPlugin {
 
         pluginManager.registerEvents(new PlayerListener(), this);
         pluginManager.registerEvents(new AsyncPlayerChatListener(), this);
+
+
+        FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().fetchAll()
+                .rowMap()
+                .forEach((factionId, map) -> {
+                    map.forEach((uuid, goal) -> FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().add(
+                            factionId,
+                            uuid,
+                            goal
+                    ));
+                });
     }
 
 }

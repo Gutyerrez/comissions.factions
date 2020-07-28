@@ -20,6 +20,8 @@ public class SelectAllFactionGoalSpec extends SelectSqlSpec<HashBasedTable<Strin
             HashBasedTable<String, UUID, FactionGoal> map = HashBasedTable.create();
 
             do {
+                resultSet.next();
+
                 map.put(
                         resultSet.getString("faction_id"),
                         UUID.fromString(
