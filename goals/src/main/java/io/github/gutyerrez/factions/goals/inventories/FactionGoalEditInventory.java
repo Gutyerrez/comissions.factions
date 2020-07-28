@@ -18,10 +18,19 @@ import org.bukkit.entity.Player;
 public class FactionGoalEditInventory extends CustomInventory {
 
     public FactionGoalEditInventory(MPlayer mPlayer, FactionGoal factionGoal) {
-        super(3 * 9, String.format("Editar meta de %s", mPlayer.getName()));
+        super(5 * 9, String.format("Editar meta de %s", mPlayer.getName()));
 
         this.setItem(
-                11,
+                13,
+                new ItemBuilder(Material.SKULL_ITEM)
+                        .durability(5)
+                        .skullOwner(mPlayer.getName())
+                        .name("§7" + mPlayer.getName())
+                        .make()
+        );
+
+        this.setItem(
+                29,
                 new ItemBuilder(Material.BOOK_AND_QUILL)
                         .name("§aEditar meta")
                         .make(),
@@ -75,7 +84,7 @@ public class FactionGoalEditInventory extends CustomInventory {
                 });
 
         this.setItem(
-                15,
+                33,
                 new ItemBuilder(Material.LAVA_BUCKET)
                         .name("§cExcluir meta")
                         .make(),

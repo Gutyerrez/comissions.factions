@@ -151,6 +151,11 @@ public class PlayerListener implements Listener {
                         return;
                     }
 
+                    if (_mPlayer.getRole() == Rel.LEADER) {
+                        player.sendMessage("§cVocê não pode definir metas para um líder.");
+                        return;
+                    }
+
                     Double goal = Doubles.tryParse(args[2].trim());
 
                     if (goal == null || goal.isNaN() || goal <= 0) {
@@ -160,24 +165,15 @@ public class PlayerListener implements Listener {
 
                     FactionGoal factionGoal = FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().get(faction).get(_mPlayer.getUuid());
 
-                    boolean alteredGoal = false;
-
-                    if (factionGoal == null) {
-                        factionGoal = new FactionGoal(
-                                _mPlayer.getName(),
-                                goal
-                        );
-
-                        FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().add(
-                                faction,
-                                _mPlayer,
-                                factionGoal
-                        );
-
-                        alteredGoal = true;
-                    } else {
-                        factionGoal.setGoal(goal);
+                    if (factionGoal != null) {
+                        player.sendMessage("§cEste jogador já possui uma meta.");
+                        return;
                     }
+
+                    factionGoal = new FactionGoal(
+                            mPlayer.getName(),
+                            goal
+                    );
 
                     FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().insert(
                             _mPlayer,
@@ -185,17 +181,14 @@ public class PlayerListener implements Listener {
                     );
 
                     player.sendMessage(String.format(
-                            "§aVocê %s meta de %s para %s coins.",
-                            alteredGoal ? "atualizou a" : "criou uma",
+                            "§aVocê criou uma meta de %s para %s coins.",
                             _mPlayer.getName(),
                             NumberUtils.format(goal)
                     ));
 
                     _mPlayer.msg(String.format(
-                            "§a%s %s meta %s %s coins.",
+                            "§a%s criou uma meta para você no valor total de %s coins.",
                             player.getName(),
-                            alteredGoal ? "atualizou sua" : "criou uma",
-                            alteredGoal ? "para" : "para você no valor total de",
                             NumberUtils.format(goal)
                     ));
                     return;

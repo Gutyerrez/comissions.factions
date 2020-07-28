@@ -53,11 +53,11 @@ public class FactionGoalsListInventory extends PaginateInventory {
                                     return;
                                 }
 
-                                if (event.isLeftClick()) {
+                                if (event.isRightClick()) {
                                     player.openInventory(
                                             new FactionGoalEditInventory(mPlayer, goal)
                                     );
-                                } else if (event.isRightClick()) {
+                                } else if (event.isLeftClick()) {
                                     if (goal.getProgress() <= 0) {
                                         return;
                                     }

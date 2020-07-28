@@ -19,9 +19,7 @@ public class SelectAllFactionGoalSpec extends SelectSqlSpec<HashBasedTable<Strin
         return resultSet -> {
             HashBasedTable<String, UUID, FactionGoal> map = HashBasedTable.create();
 
-            do {
-                resultSet.next();
-
+            while (resultSet.next()) {
                 map.put(
                         resultSet.getString("faction_id"),
                         UUID.fromString(
@@ -33,7 +31,7 @@ public class SelectAllFactionGoalSpec extends SelectSqlSpec<HashBasedTable<Strin
                                 resultSet.getDouble("progress")
                         )
                 );
-            } while (resultSet.next());
+            }
 
             return map;
         };
@@ -50,4 +48,5 @@ public class SelectAllFactionGoalSpec extends SelectSqlSpec<HashBasedTable<Strin
             return connection.prepareStatement(query);
         };
     }
+
 }
