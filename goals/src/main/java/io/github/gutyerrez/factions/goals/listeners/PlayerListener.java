@@ -12,6 +12,7 @@ import io.github.gutyerrez.factions.goals.event.PlayerFactionCommandExecuteEvent
 import io.github.gutyerrez.factions.goals.inventories.FactionGoalsListInventory;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -82,7 +83,7 @@ public class PlayerListener implements Listener {
                 if (args[0].equalsIgnoreCase("meta")) {
                     event.setCancelled(true);
 
-                    Double goal = Doubles.tryParse(args[1]);
+                    Double goal = Doubles.tryParse(args[1].trim());
 
                     FactionGoal factionGoal = FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().get(faction).get(mPlayer.getUuid());
 
@@ -107,6 +108,11 @@ public class PlayerListener implements Listener {
 
                     factionGoal.incrementProgress(goal);
 
+                    FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().insert(
+                            mPlayer,
+                            factionGoal
+                    );
+
                     player.sendMessage(String.format(
                             "§aVocê adicionou %s coins a sua meta de %s coins.",
                             NumberUtils.format(goal),
@@ -125,10 +131,11 @@ public class PlayerListener implements Listener {
                         return;
                     }
 
-                    String targetPlayer = args[1];
-                    Double goal = Doubles.tryParse(args[2]);
+                    String targetName = args[1].trim().toLowerCase();
 
-                    MPlayer _mPlayer = MPlayer.get(targetPlayer);
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(targetName);
+
+                    MPlayer _mPlayer = MPlayer.get(offlinePlayer);
 
                     if (_mPlayer == null) {
                         player.sendMessage("§cEste usuário não existe.");
@@ -139,10 +146,12 @@ public class PlayerListener implements Listener {
                             Factions.ID_NONE,
                             Factions.ID_SAFEZONE,
                             Factions.ID_WARZONE,
-                    }, _mPlayer.getFaction().getId()) || faction.getId().equals(_mPlayer.getFaction().getId())) {
+                    }, _mPlayer.getFaction().getId()) || !faction.getId().equals(_mPlayer.getFaction().getId())) {
                         player.sendMessage("§cEste usuário não pertence a sua facção.");
                         return;
                     }
+
+                    Double goal = Doubles.tryParse(args[2].trim());
 
                     if (goal == null || goal.isNaN() || goal <= 0) {
                         player.sendMessage("§cVocê informou um valor inválido.");

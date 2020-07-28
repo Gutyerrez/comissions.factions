@@ -30,11 +30,11 @@ public class FactionGoalsListInventory extends PaginateInventory {
                             .name(String.format("§7%s %s", mPlayer.getRole().getPrefix() + mPlayer.getRole().getName(), mPlayer.getName()))
                             .lore(
                                     String.format(
-                                            "§fMeta: §7%s", goal.getGoal()
+                                            "§fMeta: §7%s", NumberUtils.format(goal.getGoal())
                                     ),
                                     String.format(
                                             "§fProgresso atual: %s",
-                                            goal.isCompleted() ? "§aCompleto (" + goal.getProgress() + ")" : "§cIncompleto §7(+" + NumberUtils.format(goal.getProgressRemaining()) + ")"
+                                            goal.isCompleted() ? "§aCompleto (" + NumberUtils.format(goal.getProgress()) + ")" : "§cIncompleto §7(+" + NumberUtils.format(goal.getProgressRemaining()) + ")"
                                     )
                             )
                             .make();
@@ -58,6 +58,10 @@ public class FactionGoalsListInventory extends PaginateInventory {
                                             new FactionGoalEditInventory(mPlayer, goal)
                                     );
                                 } else if (event.isRightClick()) {
+                                    if (goal.getProgress() <= 0) {
+                                        return;
+                                    }
+
                                     ConfirmInventory confirmInventory = new ConfirmInventory(
                                             onAccept -> {
                                                 if (FactionsGoalsProvider.Hooks.ECONOMY.isActive()) {

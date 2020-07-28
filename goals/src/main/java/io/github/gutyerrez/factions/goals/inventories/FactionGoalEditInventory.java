@@ -92,6 +92,9 @@ public class FactionGoalEditInventory extends CustomInventory {
                                         _mPlayer.getFaction(),
                                         mPlayer
                                 );
+                                FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().delete(
+                                        mPlayer.getUuid()
+                                );
 
                                 mPlayer.msg(String.format(
                                         "§cO %s %s deletou sua meta.",
