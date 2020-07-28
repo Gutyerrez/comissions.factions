@@ -2,6 +2,7 @@ package io.github.gutyerrez.factions.goals.listeners;
 
 import com.google.common.primitives.Doubles;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import io.github.gutyerrez.core.shared.misc.utils.NumberUtils;
@@ -63,7 +64,6 @@ public class PlayerListener implements Listener {
             return;
         }
 
-
         String[] args = event.getArguments();
 
         switch (args.length) {
@@ -120,6 +120,11 @@ public class PlayerListener implements Listener {
                 if (args[0].equalsIgnoreCase("meta")) {
                     event.setCancelled(true);
 
+                    if (mPlayer.getRole() != Rel.LEADER && !mPlayer.isOverriding()) {
+                        player.sendMessage("§cApenas líderes podem definir metas para membros.");
+                        return;
+                    }
+
                     String targetPlayer = args[1];
                     Double goal = Doubles.tryParse(args[2]);
 
@@ -130,7 +135,11 @@ public class PlayerListener implements Listener {
                         return;
                     }
 
-                    if (!faction.equals(_mPlayer.getFaction())) {
+                    if (_mPlayer.getFaction() == null || ArrayUtils.contains(new String[]{
+                            Factions.ID_NONE,
+                            Factions.ID_SAFEZONE,
+                            Factions.ID_WARZONE,
+                    }, _mPlayer.getFaction().getId()) || faction.getId().equals(_mPlayer.getFaction().getId())) {
                         player.sendMessage("§cEste usuário não pertence a sua facção.");
                         return;
                     }

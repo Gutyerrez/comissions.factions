@@ -24,12 +24,16 @@ public class FactionGoal {
         this(owner, goal, 0.0);
     }
 
-    public Double progressRemaining() {
+    public void incrementProgress(Double progress) {
+        this.progress += progress;
+    }
+
+    public Double getProgressRemaining() {
         return this.goal - this.progress;
     }
 
-    public void incrementProgress(Double progress) {
-        this.progress += progress;
+    public Boolean isCompleted() {
+        return this.progress >= this.goal;
     }
 
 }

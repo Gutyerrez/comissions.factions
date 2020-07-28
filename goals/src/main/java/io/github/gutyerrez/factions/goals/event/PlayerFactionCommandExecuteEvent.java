@@ -16,7 +16,7 @@ import org.bukkit.event.HandlerList;
 public class PlayerFactionCommandExecuteEvent extends Event implements Cancellable {
 
     @Getter
-    private static HandlerList handlers = new HandlerList();
+    private static HandlerList handlerList  = new HandlerList();
 
     private final Player player;
     private final String commandName;
@@ -24,5 +24,10 @@ public class PlayerFactionCommandExecuteEvent extends Event implements Cancellab
 
     @Setter
     private boolean cancelled;
+
+    @Override
+    public HandlerList getHandlers() {
+        return PlayerFactionCommandExecuteEvent.handlerList;
+    }
 
 }

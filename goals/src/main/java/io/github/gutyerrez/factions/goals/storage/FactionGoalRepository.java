@@ -20,6 +20,8 @@ public class FactionGoalRepository extends MysqlRepository {
 
     public FactionGoalRepository(MysqlDatabaseProvider databaseProvider) {
         super(databaseProvider);
+
+        this.createTable();
     }
 
     private void createTable() {

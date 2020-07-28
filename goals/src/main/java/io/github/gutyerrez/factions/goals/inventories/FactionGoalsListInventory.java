@@ -28,6 +28,15 @@ public class FactionGoalsListInventory extends PaginateInventory {
                             .durability(3)
                             .skullOwner(mPlayer.getName())
                             .name(String.format("§7%s %s", mPlayer.getRole().getPrefix() + mPlayer.getRole().getName(), mPlayer.getName()))
+                            .lore(
+                                    String.format(
+                                            "§fMeta: §7%s", goal.getGoal()
+                                    ),
+                                    String.format(
+                                            "§fProgresso atual: %s",
+                                            goal.isCompleted() ? "§aCompleto (" + goal.getProgress() + ")" : "§cIncompleto §7(+" + NumberUtils.format(goal.getProgressRemaining()) + ")"
+                                    )
+                            )
                             .make();
 
                     this.addItem(
