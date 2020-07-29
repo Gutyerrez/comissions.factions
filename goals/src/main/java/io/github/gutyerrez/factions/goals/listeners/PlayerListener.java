@@ -175,6 +175,7 @@ public class PlayerListener implements Listener {
                             goal
                     );
 
+                    FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().add(faction, _mPlayer, factionGoal);
                     FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().insert(
                             _mPlayer,
                             factionGoal

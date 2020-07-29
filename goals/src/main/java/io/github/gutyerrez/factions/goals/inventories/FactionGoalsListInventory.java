@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 public class FactionGoalsListInventory extends PaginateInventory {
 
     public FactionGoalsListInventory(Faction faction) {
-        super("Metas da sua facção");
+        super(String.format("[%s] - Metas", faction.getTag()));
 
         FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().get(faction)
                 .forEach((uuid, goal) -> {
