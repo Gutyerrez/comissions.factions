@@ -11,13 +11,13 @@ import java.sql.PreparedStatement;
  * @author SrGutyerrez
  */
 @RequiredArgsConstructor
-public class DeleteFactionGoalSpec extends DeleteSqlSpec<Void> {
+public class DeleteFactionGoalSpec extends DeleteSqlSpec<Boolean> {
 
     private final String uuidString;
 
     @Override
-    public Void parser(int affectedRows) {
-        return null;
+    public Boolean parser(int affectedRows) {
+        return affectedRows == 1;
     }
 
     @Override

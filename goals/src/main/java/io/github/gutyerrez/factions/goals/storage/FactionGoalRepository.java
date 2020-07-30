@@ -36,8 +36,8 @@ public class FactionGoalRepository extends MysqlRepository {
         this.query(new InsertOrUpdateFactionGoalSpec(mPlayer.getName(), mPlayer.getUuid().toString(), mPlayer.getFaction().getId(), factionGoal.getGoal(), factionGoal.getProgress()));
     }
 
-    public void delete(UUID uuid) {
-        this.query(new DeleteFactionGoalSpec(uuid.toString()));
+    public Boolean delete(UUID uuid) {
+        return this.query(new DeleteFactionGoalSpec(uuid.toString()));
     }
 
 }

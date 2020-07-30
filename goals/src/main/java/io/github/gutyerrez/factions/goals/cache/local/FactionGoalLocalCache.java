@@ -36,8 +36,8 @@ public class FactionGoalLocalCache implements LocalCache {
         this.remove(faction.getId(), mPlayer.getUuid());
     }
 
-    public void remove(String factionId, UUID mPlayer) {
-        this.CACHE.remove(factionId, mPlayer);
+    public void remove(String factionId, UUID uuid) {
+        this.CACHE.remove(factionId, uuid);
     }
 
 }

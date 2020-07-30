@@ -64,12 +64,16 @@ public class FactionGoalsListInventory extends PaginateInventory {
 
                                     ConfirmInventory confirmInventory = new ConfirmInventory(
                                             onAccept -> {
-                                                if (FactionsGoalsProvider.Hooks.ECONOMY.isActive()) {
-                                                    FactionsGoalsProvider.Hooks.ECONOMY.get().depositPlayer(player, goal.getProgress());
+                                                if (!FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().delete(mPlayer.getUuid())) {
+                                                    player.sendMessage("§cEsta meta já foi coletada.");
+                                                    return;
                                                 }
 
                                                 FactionsGoalsProvider.Cache.Local.FACTION_GOAL.provide().remove(faction, mPlayer);
-                                                FactionsGoalsProvider.Repositories.FACTION_GOAL.provide().delete(mPlayer.getUuid());
+
+                                                if (FactionsGoalsProvider.Hooks.ECONOMY.isActive()) {
+                                                    FactionsGoalsProvider.Hooks.ECONOMY.get().depositPlayer(player, goal.getProgress());
+                                                }
 
                                                 player.sendMessage(String.format(
                                                         "§aVocê coletou %s coins desta meta e a marcou como concluida.",
