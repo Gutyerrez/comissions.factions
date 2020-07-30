@@ -1,0 +1,24 @@
+[
+  {
+    "name": "ARENA_ONE",
+    "enabled": false,
+    "icon": {
+      "display_name": "&aArena 1",
+      "lore": [
+        "&7Linha 1"
+      ],
+      "material_data": {
+        "type": 1,
+        "data": 0
+      }
+    },
+    "serialized_location": {
+      "world_name": "world",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "pitch": 0.0,
+      "yaw": 0.0
+    }
+  }
+]
