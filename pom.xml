@@ -16,7 +16,7 @@
     <modules>
         <module>ranking</module>
         <module>goals</module>
-        <module>battle</module>
+        <module>factionBattle</module>
     </modules>
 
 </project>

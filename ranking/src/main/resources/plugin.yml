@@ -1,0 +1,7 @@
+name: Ranking
+main: io.github.factions.ranking.FactionsRankingPlugin
+version: 0.1-ALPHA
+author: Gutyerrez
+depend:
+  - MassiveCore
+  - Factions

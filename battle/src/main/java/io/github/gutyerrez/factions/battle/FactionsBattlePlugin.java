@@ -17,6 +17,8 @@ public class FactionsBattlePlugin extends CustomPlugin {
 
     @Override
     public void onEnable() {
+        FactionsBattleProvider.prepare();
+
     }
 
 }
