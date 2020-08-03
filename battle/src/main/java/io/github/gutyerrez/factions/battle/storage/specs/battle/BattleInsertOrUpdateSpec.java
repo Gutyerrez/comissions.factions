@@ -1,4 +1,4 @@
-package io.github.gutyerrez.factions.battle.storage.specs;
+package io.github.gutyerrez.factions.battle.storage.specs.battle;
 
 import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.InsertSqlSpec;
 import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.PreparedStatementCreator;

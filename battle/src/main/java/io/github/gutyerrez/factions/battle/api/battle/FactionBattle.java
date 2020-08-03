@@ -1,12 +1,14 @@
 package io.github.gutyerrez.factions.battle.api.battle;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import lombok.*;
 import org.bukkit.entity.Player;
 
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author SrGutyerrez
@@ -24,9 +26,11 @@ public class FactionBattle {
     @NonNull
     private final String targetId;
 
+    @Setter
     @Getter
     private Status status;
 
+    @Getter
     private Set<UUID> factionMembers, targetMembers;
 
     @Getter
@@ -38,6 +42,8 @@ public class FactionBattle {
 
     @Getter
     private Date updatedAt;
+
+    private Set<UUID> confirmed;
 
     public void select(Faction faction, Player player) {
         if (this.factionId.equals(faction.getId())) {
@@ -55,10 +61,38 @@ public class FactionBattle {
         }
     }
 
+    public void setConfirmed(MPlayer mPlayer) {
+        if (this.confirmed.contains(mPlayer.getUuid())) {
+            return;
+        }
+
+        this.confirmed.add(mPlayer.getUuid());
+    }
+
     public void start() {
         this.status = Status.STARTED;
 
 
+    }
+
+    public Boolean isAllConfirmed() {
+        AtomicBoolean confirmed = new AtomicBoolean(true);
+
+        // faction
+        this.factionMembers.forEach(uuid -> {
+            if (!this.confirmed.contains(uuid)) {
+                confirmed.set(false);
+            }
+        });
+
+        // target faction
+        this.targetMembers.forEach(uuid -> {
+            if (!this.confirmed.contains(uuid)) {
+                confirmed.set(false);
+            }
+        });
+
+        return confirmed.get();
     }
 
     public Boolean isSelected(Player player) {
@@ -76,7 +110,7 @@ public class FactionBattle {
 
     public enum Status {
 
-        PENDING_REQUEST, WAITING_START, STARTING, STARTED, ENDING, ENDED;
+        INITIAL_REQUEST, PENDING_REQUEST, WAITING_CONFIRMATION, WAITING_START, STARTING, STARTED, ENDING, ENDED;
 
     }
 

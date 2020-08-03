@@ -5,10 +5,13 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import io.github.gutyerrez.core.spigot.inventory.CustomInventory;
 import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.factions.battle.FactionsBattlePlugin;
 import io.github.gutyerrez.factions.battle.api.battle.FactionBattle;
 import io.github.gutyerrez.factions.battle.misc.utils.MPlayerUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,8 +39,12 @@ public class BattleSelectMembersInventory extends CustomInventory {
             50, 51, 52, 53
     };
 
+    private final FactionBattle factionBattle;
+
     public BattleSelectMembersInventory(Faction faction, FactionBattle factionBattle) {
         super(6 * 9, "Escolha os participantes:");
+
+        this.factionBattle = factionBattle;
 
         for (int i = 0; i < this.getSize(); i++) {
             if (ArrayUtils.contains(this.MEMBER_SELECT_SLOTS, i) || ArrayUtils.contains(this.MEMBER_SELECTED_SLOTS, i))
@@ -58,7 +65,7 @@ public class BattleSelectMembersInventory extends CustomInventory {
                         .name("§cCancelar")
                         .lore(String.format(
                                 "§7Clique para %s o convite de batalha.",
-                                factionBattle.isInviter(faction) ? "cancelar" : "recusar"
+                                this.factionBattle.isInviter(faction) ? "cancelar" : "recusar"
                         ))
                         .make()
         );
@@ -70,15 +77,60 @@ public class BattleSelectMembersInventory extends CustomInventory {
                         .name("§aAceitar")
                         .lore(String.format(
                                 "§7Clique para %s o convite de batalha.",
-                                factionBattle.isInviter(faction) ? "finalizar" : "aceitar"
+                                this.factionBattle.isInviter(faction) ? "finalizar" : "aceitar"
                         ))
-                        .make()
+                        .make(),
+                event -> {
+                    CustomInventory confirmInventory = new BattleConfirmInventory(this.factionBattle)
+                            .make(
+                                    "§7Teste..."
+                            );
+
+                    switch (this.factionBattle.getStatus()) {
+                        case INITIAL_REQUEST: {
+                            this.factionBattle.setStatus(FactionBattle.Status.PENDING_REQUEST);
+
+                            this.factionBattle.getFactionMembers().forEach(uuid -> {
+                                Player _player = Bukkit.getPlayer(uuid);
+
+                                _player.openInventory(confirmInventory);
+                            });
+
+                            // enviar mensagem para facção desafiada selecionar os membros
+                            break;
+                        }
+                        case PENDING_REQUEST: {
+                            this.factionBattle.setStatus(FactionBattle.Status.PENDING_REQUEST);
+
+                            this.factionBattle.getTargetMembers().forEach(uuid -> {
+                                Player _player = Bukkit.getPlayer(uuid);
+
+                                _player.openInventory(confirmInventory);
+                            });
+
+                            // avisar que foi confirmado e em alguns minutos irá iniciar a batalha
+                            break;
+                        }
+                    }
+
+                    Bukkit.getScheduler().runTaskLater(
+                            FactionsBattlePlugin.getInstance(),
+                            () -> {
+                                if (confirmInventory.getViewers().size() > 0) {
+                                    this.factionBattle.setStatus(FactionBattle.Status.ENDED);
+
+                                    confirmInventory.getViewers().forEach(HumanEntity::closeInventory);
+                                }
+                            },
+                            20L * 60 * 3
+                    );
+                }
         );
 
         ImmutableList<Player> players = ImmutableList.copyOf(
                 faction.getOnlinePlayers()
                         .stream()
-                        .filter(player -> !factionBattle.isSelected(player))
+                        .filter(player -> !this.factionBattle.isSelected(player))
                         .collect(Collectors.toList())
         );
 
@@ -95,69 +147,86 @@ public class BattleSelectMembersInventory extends CustomInventory {
                 continue;
             }
 
-            if (factionBattle.isSelected(player)) {
+            if (this.factionBattle.isSelected(player)) {
                 continue;
             }
 
             MPlayer mPlayer = MPlayer.get(player);
 
-            ItemStack skullItem = MPlayerUtils.getSkull(mPlayer)
-                    .lore(
-                            "",
-                            "§aClique para selecionar."
-                    )
-                    .make();
-
-            this.setItem(
-                    memberSelectSlot,
-                    skullItem,
-                    event -> {
-                        Integer slot = event.getSlot();
-
-                        this.setItem(
-                                memberSelectSlot,
-                                null
-                        );
-
-                        factionBattle.select(faction, player);
-
-                        Integer selectedSlot = this.getNextMemberSelectedSlot();
-
-                        this.setItem(
-                                selectedSlot,
-                                skullItem,
-                                event1 -> {
-                                    factionBattle.deselect(faction, player);
-
-                                    this.setItem(
-                                            selectedSlot,
-                                            null
-                                    );
-
-                                    this.setItem(
-                                            slot,
-                                            skullItem
-                                    );
-                                }
-                        );
-                    }
-            );
+            this.setMemberSkullItem(memberSelectSlot, mPlayer);
         }
     }
 
+    private Integer getMemberDeselectedSlot() {
+        Integer slot = null;
+
+        for (Integer memberSelectedSlot : this.MEMBER_SELECT_SLOTS) {
+            ItemStack item = this.getItem(memberSelectedSlot);
+
+            if (item == null || item.getType() == Material.AIR) {
+                slot = memberSelectedSlot;
+                break;
+            }
+        }
+
+        return slot;
+    }
+
     private Integer getNextMemberSelectedSlot() {
-        Integer ret = null;
+        Integer slot = null;
 
         for (Integer memberSelectedSlot : this.MEMBER_SELECTED_SLOTS) {
             ItemStack item = this.getItem(memberSelectedSlot);
 
             if (item == null || item.getType() == Material.AIR) {
-                ret = memberSelectedSlot;
+                slot = memberSelectedSlot;
                 break;
             }
         }
 
-        return ret;
+        return slot;
+    }
+
+    private void setMemberSkullItem(Integer memberSlot, MPlayer mPlayer) {
+        ItemStack skullItem = MPlayerUtils.getSkull(mPlayer)
+                .lore(
+                        "",
+                        String.format("§aClique para %s.", this.factionBattle.isSelected(mPlayer.getPlayer()) ? "deselecionar" : "selecionar")
+                )
+                .make();
+
+        this.setItem(
+                memberSlot,
+                skullItem,
+                event -> {
+                    Integer slot = event.getSlot();
+
+                    this.setItem(
+                            slot,
+                            null
+                    );
+
+                    Integer _memberSlot;
+
+                    Player player = mPlayer.getPlayer();
+                    Faction faction = mPlayer.getFaction();
+
+                    if (this.factionBattle.isSelected(player)) {
+                        factionBattle.select(faction, player);
+
+                        _memberSlot = this.getNextMemberSelectedSlot();
+                    } else {
+                        factionBattle.deselect(faction, player);
+
+                        _memberSlot = this.getMemberDeselectedSlot();
+                    }
+
+                    this.setMemberSkullItem(
+                            _memberSlot,
+                            mPlayer
+                    );
+                }
+        );
     }
 
 }
