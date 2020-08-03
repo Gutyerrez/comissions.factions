@@ -18,29 +18,34 @@ import org.bukkit.entity.Player;
 public class FactionGoalEditInventory extends CustomInventory {
 
     public FactionGoalEditInventory(MPlayer mPlayer, FactionGoal factionGoal) {
-        super(5 * 9, String.format("Editar meta de %s", mPlayer.getName()));
+        super(4 * 9, String.format("Editar meta de %s", mPlayer.getName()));
 
         this.setItem(
                 13,
                 new ItemBuilder(Material.SKULL_ITEM)
-                        .durability(5)
+                        .durability(3)
                         .skullOwner(mPlayer.getName())
                         .name("§7" + mPlayer.getName())
                         .make()
         );
 
         this.setItem(
-                29,
+                20,
                 new ItemBuilder(Material.BOOK_AND_QUILL)
                         .name("§aEditar meta")
                         .make(),
                 event -> {
                     Player player = (Player) event.getWhoClicked();
 
+                    player.closeInventory();
+
+                    if (factionGoal.isCompleted()) {
+                        player.sendMessage("§cVocê não pode alterar uma meta que já está completa.");
+                        return;
+                    }
+                    
                     player.sendMessage("§aInsira a nova meta desejada abaixo.");
                     player.sendMessage("§7Caso queira cancelar digite 'cancelar'.");
-
-                    player.closeInventory();
 
                     AsyncPlayerChatListener.on(
                             player,
@@ -84,7 +89,7 @@ public class FactionGoalEditInventory extends CustomInventory {
                 });
 
         this.setItem(
-                33,
+                24,
                 new ItemBuilder(Material.LAVA_BUCKET)
                         .name("§cExcluir meta")
                         .make(),
