@@ -1,7 +1,7 @@
 package io.github.gutyerrez.factions.goals.storage.specs;
 
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.DeleteSqlSpec;
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.PreparedStatementCreator;
+import io.github.gutyerrez.core.shared.storage.repositories.specs.DeleteSqlSpec;
+import io.github.gutyerrez.core.shared.storage.repositories.specs.PreparedStatementCreator;
 import io.github.gutyerrez.factions.goals.FactionsGoalsConstants;
 import lombok.RequiredArgsConstructor;
 

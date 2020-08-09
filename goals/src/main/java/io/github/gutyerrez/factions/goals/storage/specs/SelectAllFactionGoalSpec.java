@@ -1,9 +1,9 @@
 package io.github.gutyerrez.factions.goals.storage.specs;
 
 import com.google.common.collect.HashBasedTable;
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.PreparedStatementCreator;
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.ResultSetExtractor;
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.specs.SelectSqlSpec;
+import io.github.gutyerrez.core.shared.storage.repositories.specs.PreparedStatementCreator;
+import io.github.gutyerrez.core.shared.storage.repositories.specs.ResultSetExtractor;
+import io.github.gutyerrez.core.shared.storage.repositories.specs.SelectSqlSpec;
 import io.github.gutyerrez.factions.goals.FactionsGoalsConstants;
 import io.github.gutyerrez.factions.goals.api.FactionGoal;
 

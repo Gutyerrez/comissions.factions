@@ -3,7 +3,7 @@ package io.github.gutyerrez.factions.goals.storage;
 import com.google.common.collect.HashBasedTable;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
-import io.github.gutyerrez.core.shared.contracts.storages.repositories.MysqlRepository;
+import io.github.gutyerrez.core.shared.storage.repositories.MysqlRepository;
 import io.github.gutyerrez.core.shared.providers.MysqlDatabaseProvider;
 import io.github.gutyerrez.factions.goals.api.FactionGoal;
 import io.github.gutyerrez.factions.goals.storage.specs.CreateFactionGoalTableSpec;
