@@ -5,7 +5,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import io.github.gutyerrez.core.shared.misc.utils.NumberUtils;
 import io.github.gutyerrez.core.spigot.inventory.ConfirmInventory;
 import io.github.gutyerrez.core.spigot.inventory.CustomInventory;
-import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.core.spigot.misc.utils.old.ItemBuilder;
 import io.github.gutyerrez.factions.goals.FactionsGoalsProvider;
 import io.github.gutyerrez.factions.goals.api.FactionGoal;
 import io.github.gutyerrez.factions.goals.listeners.AsyncPlayerChatListener;

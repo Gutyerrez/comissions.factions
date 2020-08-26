@@ -1,7 +1,7 @@
 package io.github.gutyerrez.factions.battle.misc.utils;
 
 import com.massivecraft.factions.entity.MPlayer;
-import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.core.spigot.misc.utils.old.ItemBuilder;
 import io.github.gutyerrez.factions.battle.FactionsBattleProvider;
 import org.bukkit.Material;
 

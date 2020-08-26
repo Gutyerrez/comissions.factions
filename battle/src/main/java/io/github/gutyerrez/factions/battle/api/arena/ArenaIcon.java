@@ -1,7 +1,7 @@
 package io.github.gutyerrez.factions.battle.api.arena;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.core.spigot.misc.utils.old.ItemBuilder;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;

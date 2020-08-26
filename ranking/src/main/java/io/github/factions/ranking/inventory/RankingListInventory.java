@@ -2,7 +2,7 @@ package io.github.factions.ranking.inventory;
 
 import io.github.factions.ranking.api.Rank;
 import io.github.gutyerrez.core.spigot.inventory.CustomInventory;
-import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.core.spigot.misc.utils.old.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 

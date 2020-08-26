@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import io.github.gutyerrez.core.spigot.inventory.CustomInventory;
-import io.github.gutyerrez.core.spigot.misc.utils.ItemBuilder;
+import io.github.gutyerrez.core.spigot.misc.utils.old.ItemBuilder;
 import io.github.gutyerrez.factions.battle.FactionsBattlePlugin;
 import io.github.gutyerrez.factions.battle.api.battle.FactionBattle;
 import io.github.gutyerrez.factions.battle.misc.utils.MPlayerUtils;
